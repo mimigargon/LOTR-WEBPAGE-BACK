@@ -5,7 +5,7 @@ const urlDb = process.env.MONGO_DB;
 
 if (!urlDb) {
   throw new Error(
-    "No se reconoce la url de la base de datos. Debes añadirla en un archivo .env bajo el nombre de la variable MONGO_DB"
+    "The url of the database is not recognized. You must add it in an .env file under the MONGO_DB variable name"
   );
 }
 

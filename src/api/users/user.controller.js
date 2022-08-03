@@ -4,7 +4,7 @@ const postRegister = (req, res, next) => {
     const { email, password } = req.body;
 
     if(!email || !password) {
-        const error = new Error('Falta campo email o password en tu formulario');
+        const error = new Error('Email or password is missing');
         error.status = 400;
         return next(error);
     }
@@ -21,7 +21,7 @@ const postRegister = (req, res, next) => {
             return res.status(201).json(user);
         });
     };
-    passport.authenticate('registro', done)(req);
+    passport.authenticate('register', done)(req);
 };
 
 const postLogin = (req, res, next) => {
@@ -45,7 +45,7 @@ const postLogout = async (req, res, next) => {
         await req.logout(() => {
             req.session.destroy(() => {
                 res.clearCookie('connect.sid');
-                return res.status(200).json('¡Hasta pronto!');
+                return res.status(200).json('¡Goodbye!');
             });
         });
     } else {
@@ -53,8 +53,20 @@ const postLogout = async (req, res, next) => {
     }
 };
 
+const getCheckSession = async(req, res, nex) => {
+    if(req.user) {
+        let userRegister = req.user;
+        userRegister.password = null;
+
+        return res.status(200).json(userRegister);
+    } else {
+        return res.status(400).json({message: 'No user found'});
+    }
+}
+
 module.exports = {
     postRegister,
     postLogin,
     postLogout,
+    getCheckSession,
 };
